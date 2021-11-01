@@ -17,7 +17,7 @@ import com.example.shaadirajapplication.common.ViewModelFactory
 import com.example.shaadirajapplication.networking.Resource
 import com.example.shaadirajapplication.networking.RetrofitBuilder
 import com.tatadigital.qmin.myaccount.view.adapter.UserAdapter
-import kotlinx.android.synthetic.main.activityt_users.*
+import kotlinx.android.synthetic.main.activity_users.*
 
 class UserActivity : AppCompatActivity(), UserAdapter.ItemListener {
 
@@ -28,7 +28,7 @@ class UserActivity : AppCompatActivity(), UserAdapter.ItemListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activityt_users)
+        setContentView(R.layout.activity_users)
         setUpViewModel()
         initRecyclerViews()
         observeData()
