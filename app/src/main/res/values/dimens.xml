@@ -1,0 +1,19 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="card_margin">5dp</dimen>
+    <dimen name="card_radius_margin">4dp</dimen>
+    <dimen name="card_elevation_margin">4dp</dimen>
+    <dimen name="margin_xsmall">5dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_large">10dp</dimen>
+    <dimen name="margin_xxlarge">12dp</dimen>
+    <dimen name="margin_xxxlarge">16dp</dimen>
+    <dimen name="text_size_xsmall">5dp</dimen>
+    <dimen name="text_size_small">8dp</dimen>
+    <dimen name="text_size_large">10dp</dimen>
+    <dimen name="text_size_xxlarge">12dp</dimen>
+    <dimen name="text_size_xxxlarge">16dp</dimen>
+    <dimen name="profile_image_width">120dp</dimen>
+    <dimen name="profile_image_height">120dp</dimen>
+
+</resources>
