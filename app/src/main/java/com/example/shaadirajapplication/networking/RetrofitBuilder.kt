@@ -30,7 +30,7 @@ object RetrofitBuilder {
         val qminCache = Cache(ShaadiApplication.applicationContext().cacheDir, qminCacheSize)
         logger.level = HttpLoggingInterceptor.Level.BODY
         val builder = OkHttpClient.Builder()
-         .addInterceptor(logger)
+         //.addInterceptor(logger)
             .addInterceptor(NetworkConnectionInterceptor(ShaadiApplication.applicationContext()))
             .addInterceptor(
                 object : Interceptor {
