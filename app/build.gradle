@@ -91,5 +91,23 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
+    // test case Core library
+    testImplementation "androidx.test:core:$androidxTest"
+    androidTestImplementation "androidx.test:rules:$androidxTest"
+    testImplementation("junit:junit:$junit")
+    androidTestImplementation "androidx.test:runner:$androidxTest"
+    androidTestImplementation("androidx.test.espresso:espresso-core:$espressoCore")
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoCore"
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutineVersion")
+    testImplementation("android.arch.core:core-testing:$junitVersion")
+    testImplementation("androidx.arch.core:core-testing:$junitVersion")
+    androidTestImplementation("androidx.test.ext:junit:$junitVersion")
+    testImplementation("org.mockito:mockito-core:$mockitoVersion")
+    androidTestImplementation("org.mockito:mockito-android:$mockitoVersion")
+    testImplementation("com.squareup.okhttp3:mockwebserver:$okhttpVersion")
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlin"
+    testImplementation 'org.mockito:mockito-inline:2.13.0'
+    debugImplementation 'androidx.fragment:fragment-testing:1.2.5'
+
 
 }
