@@ -2,6 +2,7 @@
 package com.example.shaadirajapplication.networking
 
 
+import com.example.shaadirajapplication.BuildConfig
 import com.example.shaadirajapplication.BuildConfig.API_BASE_URL
 import com.example.shaadirajapplication.ShaadiApplication
 import com.example.shaadirajapplication.common.NetworkConnectionInterceptor
@@ -23,6 +24,13 @@ object RetrofitBuilder {
     private val gson: Gson = GsonBuilder()
         .setLenient()
         .create()
+
+    var certPinner: CertificatePinner = CertificatePinner.Builder()
+        .add(
+            "*.randomuser.me",
+            "sha256/1tQ9SO5FQykn1//VGOzNIYgUgpmQQ="
+        )
+        .build()
 
     private fun getOkHttpClient(): OkHttpClient {
        val logger = HttpLoggingInterceptor()
@@ -57,7 +65,14 @@ object RetrofitBuilder {
             .connectTimeout(120, TimeUnit.SECONDS)
             .readTimeout(120, TimeUnit.SECONDS)
 
-        return builder.build()
+        return if (BuildConfig.DEBUG) {
+            builder.build()
+
+        } else {
+            builder.certificatePinner(certPinner).build()
+        }
+
+       // return builder.build()
         }
 
 
