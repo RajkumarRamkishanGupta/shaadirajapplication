@@ -19,6 +19,8 @@ android {
     buildTypes {
         debug {
             buildConfigField 'String', 'API_BASE_URL', '"https://randomuser.me/api/"'
+            buildConfigField "String", "PINNING_KEY_1", '\"sha256/VGOzNIYgUgpmQQ=\"'
+
 
 
             minifyEnabled false
@@ -28,6 +30,8 @@ android {
 
         release {
             buildConfigField 'String', 'API_BASE_URL', '"https://randomuser.me/api/"'
+            buildConfigField "String", "PINNING_KEY_1", '\"sha256/VGOzNIYgUgpmQQ=\"'
+
 
 
             minifyEnabled true

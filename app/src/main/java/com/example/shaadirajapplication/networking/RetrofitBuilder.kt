@@ -28,7 +28,7 @@ object RetrofitBuilder {
     var certPinner: CertificatePinner = CertificatePinner.Builder()
         .add(
             "*.randomuser.me",
-            "sha256/1tQ9SO5FQykn1//VGOzNIYgUgpmQQ="
+            BuildConfig.PINNING_KEY_1
         )
         .build()
 
