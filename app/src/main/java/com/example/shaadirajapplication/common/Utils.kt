@@ -149,4 +149,101 @@ fun MessengerWelcomeScreen() {
     }
 }
 
+@Composable
+fun RegistrationScreen() {
+    var name by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var isAgreed by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(20.dp))
+
+        // Upload Icon Placeholder
+        Icon(
+            imageVector = Icons.Default.CameraAlt,
+            contentDescription = "Upload Icon",
+            modifier = Modifier
+                .size(80.dp)
+                .clip(CircleShape)
+                .background(Color(0xFFE0F0FF))
+                .padding(16.dp)
+        )
+        Text(text = "Upload Your Photo", modifier = Modifier.padding(8.dp))
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text("Lorem ipsum") })
+        OutlinedTextField(value = email, onValueChange = { email = it }, label = { Text("Dolor sit") })
+        OutlinedTextField(value = username, onValueChange = { username = it }, label = { Text("Amet") })
+        OutlinedTextField(value = password, onValueChange = { password = it }, label = { Text("Lorem ipsum") })
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Checkbox(checked = isAgreed, onCheckedChange = { isAgreed = it })
+            Text(text = "I agree with T&C")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(onClick = { /* Handle form submission */ }, modifier = Modifier.fillMaxWidth()) {
+            Text("LOREM IPSUM")
+        }
+    }
+}
+
+@Composable
+fun ProfileMenuScreen(onMenuClick: (String) -> Unit) {
+    val menuItems = listOf(
+        "Lorem ipsum" to Icons.Default.Home,
+        "Dolor sit" to Icons.Default.Notifications,
+        "Amet lorem" to Icons.Default.Lock,
+        "Ipsum dolor" to Icons.Default.Email,
+        "Sit amet" to Icons.Default.Settings,
+        "Lorem ipsum" to Icons.Default.ExitToApp
+    )
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Default.Person,
+                contentDescription = "Profile",
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(CircleShape)
+                    .background(Color(0xFFE0F0FF))
+                    .padding(8.dp)
+            )
+            Column(modifier = Modifier.padding(start = 8.dp)) {
+                Text("Lorem ipsum Name", fontWeight = FontWeight.Bold)
+                Text("Dolor sit", color = Color.Gray)
+            }
+        }
+
+        Divider()
+
+        menuItems.forEach { (label, icon) ->
+            ListItem(
+                headlineContent = { Text(label) },
+                leadingContent = {
+                    Icon(imageVector = icon, contentDescription = label)
+                },
+                modifier = Modifier.clickable { onMenuClick(label) }
+            )
+        }
+    }
+}
+
 }
