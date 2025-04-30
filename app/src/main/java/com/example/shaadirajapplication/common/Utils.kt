@@ -84,6 +84,69 @@ object Utils {
 
 // In MainActivity.kt class MainActivity : ComponentActivity() { override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState) setContent { val navController = rememberNavController() MessengerAppNavHost(navController = navController) } } }
 
+@Composable
+fun MessengerWelcomeScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFEAF2FB)), // Light background
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(24.dp)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(40.dp))
 
+            Text(
+                text = "MESSENGER",
+                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                color = Color.Black
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = "Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit, sed",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Gray,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Emoji with message bubble
+            Box(contentAlignment = Alignment.Center) {
+                Icon(
+                    imageVector = Icons.Default.Email,
+                    contentDescription = "Message Icon",
+                    tint = Color.White,
+                    modifier = Modifier
+                        .size(100.dp)
+                        .background(Color(0xFF5A8DEE), CircleShape)
+                        .padding(20.dp)
+                )
+                Text(
+                    text = "\uD83D\uDE03", // Smiley Emoji
+                    fontSize = 40.sp,
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .offset(x = 30.dp, y = (-30).dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(40.dp))
+
+            Button(
+                onClick = { /* TODO: Handle button click */ },
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF5A8DEE))
+            ) {
+                Text(text = "LOREM IPSUM", color = Color.White)
+            }
+        }
+    }
+}
 
 }
