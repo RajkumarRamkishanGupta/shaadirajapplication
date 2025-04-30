@@ -60,6 +60,30 @@ object Utils {
         return formatter.format(date)
 
     }
+    // Root NavHost for Jetpack Compose @Composable fun MessengerAppNavHost(navController: NavHostController) { NavHost(navController = navController, startDestination = "splash") { composable("splash") { SplashScreen(navController) } composable("upload_photo") { UploadPhotoScreen(navController) } composable("login") { LoginScreen(navController) } composable("pin_input") { PinInputScreen(navController) } composable("contacts") { ContactListScreen(navController) } composable("messages") { MessageListScreen(navController) } composable("chat") { ChatScreen(navController) } composable("calls") { CallsScreen(navController) } composable("groups") { GroupsScreen(navController) } composable("media") { MediaScreen(navController) } } }
+
+@Composable fun SplashScreen(navController: NavController) { Column( modifier = Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally ) { Text("MESSENGER", style = MaterialTheme.typography.h4) Spacer(modifier = Modifier.height(16.dp)) Button(onClick = { navController.navigate("upload_photo") }) { Text("Lorem Ipsum") } } }
+
+@Composable fun UploadPhotoScreen(navController: NavController) { Column( modifier = Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally ) { Icon(Icons.Default.AccountCircle, contentDescription = null, modifier = Modifier.size(100.dp)) Spacer(modifier = Modifier.height(16.dp)) Text("Upload Your Photo") Spacer(modifier = Modifier.height(16.dp)) Button(onClick = { navController.navigate("login") }) { Text("Lorem Ipsum") } } }
+
+@Composable fun LoginScreen(navController: NavController) { Column(modifier = Modifier.fillMaxSize().padding(16.dp)) { OutlinedTextField(value = "", onValueChange = {}, label = { Text("Email") }) OutlinedTextField(value = "", onValueChange = {}, label = { Text("Password") }) Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) { Checkbox(checked = false, onCheckedChange = {}) Text("I agree with T&C") } Button(onClick = { navController.navigate("pin_input") }, modifier = Modifier.align(Alignment.CenterHorizontally)) { Text("Lorem Ipsum") } } }
+
+@Composable fun PinInputScreen(navController: NavController) { Column( modifier = Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally ) { Text("Enter PIN") Spacer(modifier = Modifier.height(8.dp)) Row(horizontalArrangement = Arrangement.Center) { repeat(3) { OutlinedTextField(value = "", onValueChange = {}, modifier = Modifier.width(40.dp)) } } Spacer(modifier = Modifier.height(16.dp)) Button(onClick = { navController.navigate("contacts") }) { Text("Lorem Ipsum") } } }
+
+@Composable fun ContactListScreen(navController: NavController) { LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) { items(5) { index -> Row( modifier = Modifier.fillMaxWidth().clickable { navController.navigate("chat") }.padding(vertical = 8.dp), verticalAlignment = Alignment.CenterVertically ) { Icon(Icons.Default.Person, contentDescription = null, modifier = Modifier.size(40.dp)) Spacer(modifier = Modifier.width(8.dp)) Text("Contact ${index + 1}") } } } }
+
+@Composable fun MessageListScreen(navController: NavController) { LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) { items(5) { index -> ListItem(headlineText = { Text("Message from Contact ${index + 1}") }, supportingText = { Text("Lorem ipsum dolor sit amet") }) } } }
+
+@Composable fun ChatScreen(navController: NavController) { Column(modifier = Modifier.fillMaxSize().padding(16.dp)) { LazyColumn(modifier = Modifier.weight(1f)) { items(10) { index -> Text("Message ${index + 1}", modifier = Modifier.padding(vertical = 4.dp)) } } Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) { OutlinedTextField(value = "", onValueChange = {}, modifier = Modifier.weight(1f)) IconButton(onClick = {}) { Icon(Icons.Default.Send, contentDescription = null) } } } }
+
+@Composable fun CallsScreen(navController: NavController) { LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) { items(5) { index -> ListItem( leadingContent = { Icon(Icons.Default.Phone, contentDescription = null) }, headlineText = { Text("Call ${index + 1}") }, supportingText = { Text("Date and time") } ) } } }
+
+@Composable fun GroupsScreen(navController: NavController) { LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) { items(3) { index -> ListItem(headlineText = { Text("Group ${index + 1}") }, supportingText = { Text("Group description") }) } } }
+
+@Composable fun MediaScreen(navController: NavController) { LazyVerticalGrid(columns = GridCells.Fixed(3), modifier = Modifier.fillMaxSize().padding(16.dp)) { items(9) { index -> Box(modifier = Modifier .padding(4.dp) .aspectRatio(1f) .background(Color.Gray)) { Text("Image ${index + 1}", modifier = Modifier.align(Alignment.Center), color = Color.White) } } } }
+
+// In MainActivity.kt class MainActivity : ComponentActivity() { override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState) setContent { val navController = rememberNavController() MessengerAppNavHost(navController = navController) } } }
+
 
 
 }
