@@ -419,4 +419,116 @@ class ChatViewModel @Inject constructor(
     // ViewModel logic here
 }
 Let me know if you want a complete minimal project structure or if you'd like to enable persistent chat using preferences or files instead of Room.
+
+Great! Let’s start by building the UI layer for the chat screen using Jetpack Compose. This will include:
+
+Top App Bar
+LazyColumn for messages
+Message Bubbles (for sender and receiver)
+Bottom Input Bar
+ChatScreen.kt
+@Composable
+fun ChatScreen(
+    messages: List<ChatMessage>,
+    onMessageSend: (String) -> Unit
+) {
+    var currentMessage by remember { mutableStateOf("") }
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        TopBar()
+
+        LazyColumn(
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 8.dp),
+            reverseLayout = true
+        ) {
+            items(messages.reversed()) { message ->
+                MessageBubble(message)
+            }
+        }
+
+        BottomBar(
+            message = currentMessage,
+            onMessageChange = { currentMessage = it },
+            onSend = {
+                if (currentMessage.isNotBlank()) {
+                    onMessageSend(currentMessage)
+                    currentMessage = ""
+                }
+            }
+        )
+    }
+}
+TopBar.kt
+@Composable
+fun TopBar() {
+    TopAppBar(
+        title = { Text("Chat", fontWeight = FontWeight.Bold) },
+        actions = {
+            IconButton(onClick = {}) {
+                Icon(Icons.Default.Person, contentDescription = "Profile")
+            }
+            IconButton(onClick = {}) {
+                Icon(Icons.Default.Search, contentDescription = "Search")
+            }
+        },
+        backgroundColor = MaterialTheme.colors.surface,
+        elevation = 4.dp
+    )
+}
+MessageBubble.kt
+@Composable
+fun MessageBubble(message: ChatMessage) {
+    val isMe = message.isMe
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        horizontalArrangement = if (isMe) Arrangement.End else Arrangement.Start
+    ) {
+        Column(
+            modifier = Modifier
+                .background(
+                    color = if (isMe) Color(0xFFE0F7FA) else Color(0xFFF1F1F1),
+                    shape = RoundedCornerShape(12.dp)
+                )
+                .padding(10.dp)
+                .widthIn(max = 250.dp)
+        ) {
+            Text(text = message.text, style = MaterialTheme.typography.body2)
+        }
+    }
+}
+BottomBar.kt
+@Composable
+fun BottomBar(
+    message: String,
+    onMessageChange: (String) -> Unit,
+    onSend: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        TextField(
+            value = message,
+            onValueChange = onMessageChange,
+            modifier = Modifier.weight(1f),
+            placeholder = { Text("Type a message") },
+            maxLines = 4
+        )
+        IconButton(onClick = onSend) {
+            Icon(Icons.Default.Send, contentDescription = "Send")
+        }
+    }
+}
+ChatMessage.kt (Model in UI layer)
+data class ChatMessage(
+    val text: String,
+    val isMe: Boolean
+)
+
 }
