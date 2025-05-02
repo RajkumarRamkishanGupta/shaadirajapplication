@@ -369,4 +369,54 @@ Without this setup:
 Hilt cannot generate the necessary components.
 You’ll get runtime errors like java.lang.IllegalStateException: Hilt does not have a generated component for this class.
 
+
+
+    Thanks for the clarification — since you're not using a database, Hilt still needs a way to provide your ChatUseCase, but without a ChatRepositoryImpl backed by Room.
+
+Here’s how to fix your issue without using Room or a database:
+
+✅ Step-by-Step: Fix Hilt Missing Binding Without Database
+1. Provide a Fake/In-Memory Repository
+Create a simple in-memory implementation:
+
+class ChatRepositoryImpl @Inject constructor() : ChatRepository {
+
+    private val messages = MutableStateFlow<List<ChatMessage>>(emptyList())
+
+    override fun getMessages(): Flow<List<ChatMessage>> = messages
+
+    override suspend fun sendMessage(message: ChatMessage) {
+        messages.value = messages.value + message
+    }
+}
+2. Make ChatUseCase Injectable
+Update it like this:
+
+class ChatUseCase @Inject constructor(
+    private val repository: ChatRepository
+) {
+    fun getMessages() = repository.getMessages()
+    suspend fun sendMessage(message: ChatMessage) = repository.sendMessage(message)
+}
+3. Provide the Repository to Hilt
+Create a module:
+
+@Module
+@InstallIn(SingletonComponent::class)
+object ChatModule {
+
+    @Provides
+    fun provideChatRepository(): ChatRepository = ChatRepositoryImpl()
+}
+With this setup, Hilt can provide ChatUseCase through constructor injection.
+
+Now you can inject ChatUseCase into your ViewModel:
+
+@HiltViewModel
+class ChatViewModel @Inject constructor(
+    private val chatUseCase: ChatUseCase
+) : ViewModel() {
+    // ViewModel logic here
+}
+Let me know if you want a complete minimal project structure or if you'd like to enable persistent chat using preferences or files instead of Room.
 }
