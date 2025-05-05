@@ -642,4 +642,113 @@ Would you like the Compose UI implementation example next?
 Show quoted text
 
 
+Sure! Here's a complete step-by-step setup for a local Room database in your Jetpack Compose + Hilt + MVVM chat app, with fields:
+
+id: Int
+sender: String
+message: String
+timestamp: Long
+1. Add dependencies (in build.gradle)
+// Room
+implementation "androidx.room:room-runtime:2.6.1"
+kapt "androidx.room:room-compiler:2.6.1"
+implementation "androidx.room:room-ktx:2.6.1"
+
+// Hilt
+implementation "com.google.dagger:hilt-android:2.50"
+kapt "com.google.dagger:hilt-android-compiler:2.50"
+implementation "androidx.hilt:hilt-navigation-compose:1.2.0"
+2. Enable kapt (top-level build.gradle)
+apply plugin: 'kotlin-kapt'
+3. Create the ChatMessage entity
+@Entity(tableName = "chat_messages")
+data class ChatMessage(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val sender: String,
+    val message: String,
+    val timestamp: Long
+)
+4. DAO (Data Access Object)
+@Dao
+interface ChatDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMessage(message: ChatMessage)
+
+    @Query("SELECT * FROM chat_messages ORDER BY timestamp ASC")
+    fun getAllMessages(): Flow<List<ChatMessage>>
+}
+5. Database
+@Database(entities = [ChatMessage::class], version = 1)
+abstract class ChatDatabase : RoomDatabase() {
+    abstract fun chatDao(): ChatDao
+}
+6. Hilt Module
+@Module
+@InstallIn(SingletonComponent::class)
+object ChatDatabaseModule {
+
+    @Provides
+    fun provideDatabase(@ApplicationContext context: Context): ChatDatabase {
+        return Room.databaseBuilder(
+            context,
+            ChatDatabase::class.java,
+            "chat_db"
+        ).build()
+    }
+
+    @Provides
+    fun provideChatDao(db: ChatDatabase): ChatDao = db.chatDao()
+}
+7. Repository
+interface ChatRepository {
+    suspend fun insertMessage(message: ChatMessage)
+    fun getMessages(): Flow<List<ChatMessage>>
+}
+
+class ChatRepositoryImpl @Inject constructor(
+    private val dao: ChatDao
+) : ChatRepository {
+    override suspend fun insertMessage(message: ChatMessage) = dao.insertMessage(message)
+    override fun getMessages(): Flow<List<ChatMessage>> = dao.getAllMessages()
+}
+8. UseCase (optional)
+class ChatUseCase @Inject constructor(private val repository: ChatRepository) {
+    suspend fun sendMessage(message: ChatMessage) = repository.insertMessage(message)
+    fun getMessages(): Flow<List<ChatMessage>> = repository.getMessages()
+}
+9. ViewModel
+@HiltViewModel
+class ChatViewModel @Inject constructor(
+    private val useCase: ChatUseCase
+) : ViewModel() {
+
+    val messages = useCase.getMessages().stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        emptyList()
+    )
+
+    fun sendMessage(text: String, sender: String) {
+        viewModelScope.launch {
+            useCase.sendMessage(
+                ChatMessage(sender = sender, message = text, timestamp = System.currentTimeMillis())
+            )
+        }
+    }
+}
+10. Application Class
+@HiltAndroidApp
+class MyApp : Application()
+Declare this class in AndroidManifest.xml:
+
+<application
+    android:name=".MyApp"
+    ...>
+Done!
+This sets up a full Room database with Hilt and MVVM for a local chat message history.
+
+Would you like the Compose UI implementation example next?
+
+Show quoted text
+
 }
